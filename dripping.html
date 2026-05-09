@@ -1,0 +1,183 @@
+--- dripping-blood.html
++++ dripping-blood.html
+@@ -0,0 +1,179 @@
++<!DOCTYPE html>
++<html lang="en">
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <title>Dripping Blood Background</title>
++    <style>
++        body {
++            margin: 0;
++            padding: 0;
++            height: 100vh;
++            background-color: #000;
++            overflow: hidden;
++            position: relative;
++            font-family: Arial, sans-serif;
++            color: #fff;
++        }
++
++        .content {
++            position: relative;
++            z-index: 2;
++            text-align: center;
++            padding: 20px;
++            margin-top: 20vh;
++        }
++
++        .blood-container {
++            position: absolute;
++            top: 0;
++            left: 0;
++            width: 100%;
++            height: 100%;
++            z-index: 1;
++            overflow: hidden;
++        }
++
++        .blood-drip {
++            position: absolute;
++            top: -50px;
++            background-color: #8a0303;
++            width: 30px;
++            border-radius: 0 0 15px 15px;
++            animation: drip 5s infinite;
++            box-shadow: 0 0 10px rgba(138, 3, 3, 0.7);
++        }
++
++        .blood-pool {
++            position: absolute;
++            top: 0;
++            left: 0;
++            width: 100%;
++            height: 80px;
++            background-color: #8a0303;
++            box-shadow: 0 0 20px rgba(138, 3, 3, 0.8);
++            z-index: 1;
++        }
++
++        .blood-drop {
++            position: absolute;
++            width: 20px;
++            height: 20px;
++            background-color: #8a0303;
++            border-radius: 50%;
++            animation: drop 3s infinite;
++            box-shadow: 0 0 10px rgba(138, 3, 3, 0.7);
++        }
++
++        @keyframes drip {
++            0% {
++                height: 0;
++                opacity: 1;
++            }
++            70% {
++                height: calc(30vh + 50px);
++                opacity: 1;
++            }
++            100% {
++                height: calc(30vh + 50px);
++                opacity: 0.7;
++            }
++        }
++
++        @keyframes drop {
++            0% {
++                top: 80px;
++                opacity: 1;
++                transform: scale(1);
++            }
++            80% {
++                opacity: 1;
++                transform: scale(1);
++            }
++            100% {
++                top: 95vh;
++                opacity: 0;
++                transform: scale(0.5);
++            }
++        }
++    </style>
++<!-- Source Protection Scripts --><script src="/JS/html-encryptor.js"></script></head>
++<body>
++    <div class="blood-container">
++        <div class="blood-pool"></div>
++        <!-- Blood drips will be added dynamically with JavaScript -->
++    </div>
++
++    <div class="content">
++        <h1>Dripping Blood Background</h1>
++        <p>Your content goes here</p>
++    </div>
++
++    <script>
++        // Create blood drips
++        const bloodContainer = document.querySelector('.blood-container');
++        const poolElement = document.querySelector('.blood-pool');
++        
++        // Create initial drips
++        for (let i = 0; i < 15; i++) {
++            createBloodDrip();
++        }
++        
++        // Create blood drops falling from the pool
++        setInterval(() => {
++            if (Math.random() > 0.7) {
++                createBloodDrop();
++            }
++        }, 500);
++
++        // Create new drips periodically
++        setInterval(() => {
++            createBloodDrip();
++        }, 2000);
++
++        function createBloodDrip() {
++            const drip = document.createElement('div');
++            drip.classList.add('blood-drip');
++            
++            // Random position, width and delay
++            const left = Math.random() * 100;
++            const width = 10 + Math.random() * 40;
++            const delay = Math.random() * 5;
++            const duration = 5 + Math.random() * 7;
++            
++            drip.style.left = `${left}%`;
++            drip.style.width = `${width}px`;
++            drip.style.animationDelay = `${delay}s`;
++            drip.style.animationDuration = `${duration}s`;
++            
++            bloodContainer.appendChild(drip);
++            
++            // Remove the drip after animation completes to avoid cluttering the DOM
++            setTimeout(() => {
++                drip.remove();
++            }, (delay + duration) * 1000);
++        }
++
++        function createBloodDrop() {
++            const drop = document.createElement('div');
++            drop.classList.add('blood-drop');
++            
++            // Random position and delay
++            const left = Math.random() * 100;
++            const delay = Math.random() * 2;
++            const duration = 2 + Math.random() * 3;
++            
++            drop.style.left = `${left}%`;
++            drop.style.animationDelay = `${delay}s`;
++            drop.style.animationDuration = `${duration}s`;
++            
++            bloodContainer.appendChild(drop);
++            
++            // Remove the drop after animation completes
++            setTimeout(() => {
++                drop.remove();
++            }, (delay + duration) * 1000);
++        }
++    </script>
++<!-- Source Protection Scripts --><script src="/JS/enhanced-protection.js"></script><script src="/JS/apply-protection.js"></script></body>
++</html>
+

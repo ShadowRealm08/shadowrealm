@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shadow Realm</title>
+    <script src="https://kit.fontawesome.com/380b381951.js" crossorigin="anonymous"></script>
+    <link rel="icon" href="icons/favicon.ico" />
+    <link rel="stylesheet" href="/icons/font-awesome/css/all.css" />
+    <link rel="stylesheet" href="styles/main.css" />
+    <style>
+      body {
+          margin: 0;
+          padding: 0 0 60px 0; /* Added bottom padding to prevent content from being hidden behind fixed footer */
+          min-height: 100vh;
+          background-color: #000;
+          overflow-x: hidden;
+          overflow-y: auto;
+          position: relative;
+          font-family: Arial, sans-serif;
+          color: #fff;
+      }
+      
+      /* Visitor Counter Styles */
+      #visitor-counter {
+          position: fixed;
+          top: 10px;
+          right: 10px;
+          background-color: rgba(138, 3, 138, 0.8);
+          color: white;
+          padding: 8px 15px;
+          border-radius: 20px;
+          font-family: monospace;
+          font-size: 14px;
+          z-index: 1000;
+          box-shadow: 0 0 10px rgba(138, 3, 138, 0.7);
+          border: 1px solid #861a8e;
+          transition: all 0.3s ease;
+      }
+      
+      #visitor-counter:hover {
+          background-color: rgba(138, 3, 138, 1);
+          box-shadow: 0 0 15px rgba(138, 3, 138, 0.9);
+      }
+      
+      #visitor-counter i {
+          margin-right: 5px;
+          color: #fff;
+      }
+      
+      #count {
+          font-weight: bold;
+          color: #fff;
+      }
+      
+      /* Home Button Styles */
+      .home-button {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          background-color: #861a8e;
+          color: white;
+          padding: 10px;
+          border-radius: 50%;
+          width: 50px;
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          text-decoration: none;
+          box-shadow: 0 0 15px rgba(134, 26, 142, 0.5);
+          transition: background-color 0.3s, transform 0.3s;
+          z-index: 100;
+      }
+
+      .home-button:hover {
+          background-color: #a020f0;
+          transform: scale(1.1);
+      }
+
+      .content {
+          position: relative;
+          z-index: 2;
+          text-align: center;
+          padding: 20px;
+          margin-top: 100px;
+          margin-bottom: 100px;
+      }
+
+      .blood-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+          overflow: hidden;
+      }
+
+      .blood-drip {
+          position: absolute;
+          top: -50px;
+          background-color: #8a0303;
+          width: 30px;
+          border-radius: 0 0 15px 15px;
+          animation: drip 5s infinite;
+          box-shadow: 0 0 10px rgba(138, 3, 3, 0.7);
+      }
+
+      .blood-pool {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 80px;
+          background-color: #8a0303;
+          box-shadow: 0 0 20px rgba(138, 3, 3, 0.8);
+          z-index: 1;
+      }
+
+      .blood-drop {
+          position: absolute;
+          width: 20px;
+          height: 20px;
+          background-color: #8a0303;
+          border-radius: 50%;
+          animation: drop 3s infinite;
+          box-shadow: 0 0 10px rgba(138, 3, 3, 0.7);
+      }
+
+      @keyframes drip {
+          0% {
+              height: 0;
+              opacity: 1;
+          }
+          70% {
+              height: calc(30vh + 50px);
+              opacity: 1;
+          }
+          100% {
+              height: calc(30vh + 50px);
+              opacity: 0.7;
+          }
+      }
+
+      @keyframes drop {
+          0% {
+              top: 80px;
+              opacity: 1;
+              transform: scale(1);
+          }
+          80% {
+              opacity: 1;
+              transform: scale(1);
+          }
+          100% {
+              top: 95vh;
+              opacity: 0;
+              transform: scale(0.5);
+          }
+      }
+      
+      /* Title styles with matrix effect */
+      .title-container {
+          position: relative;
+          margin-top: 20px;
+          margin-bottom: 40px;
+          padding: 20px;
+          z-index: 10;
+      }
+      
+      .title-highlight {
+          background-color: rgba(134, 26, 142, 0.3);
+          padding: 15px 40px;
+          border-radius: 8px;
+          box-shadow: 0 0 25px rgba(134, 26, 142, 0.6);
+          backdrop-filter: blur(3px);
+          -webkit-backdrop-filter: blur(3px);
+          border: 1px solid rgba(134, 26, 142, 0.5);
+          animation: glow 3s infinite alternate;
+          position: relative;
+          overflow: hidden;
+      }
+      
+      .title-text {
+          font-family: "Source Sans Pro", sans-serif;
+          font-size: 3.5em;
+          font-weight: 900;
+          color: #fff;
+          margin: 0;
+          text-shadow: 0 0 15px rgba(134, 26, 142, 0.9);
+          letter-spacing: 2px;
+          animation: pulse 3s infinite alternate;
+          position: relative;
+          z-index: 2;
+      }
+      
+      .matrix-rain {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          z-index: 1;
+      }
+      
+      .matrix-column {
+          position: absolute;
+          top: -20px;
+          color: #861a8e;
+          font-family: monospace;
+          font-size: 1.2em;
+          text-shadow: 0 0 5px rgba(134, 26, 142, 0.7);
+          animation: fall linear infinite;
+          opacity: 0.7;
+      }
+      
+      @keyframes fall {
+          to {
+              transform: translateY(100vh);
+          }
+      }
+      
+      @keyframes glow {
+          0% {
+              box-shadow: 0 0 25px rgba(134, 26, 142, 0.6);
+              background-color: rgba(134, 26, 142, 0.3);
+          }
+          100% {
+              box-shadow: 0 0 35px rgba(160, 32, 240, 0.8);
+              background-color: rgba(160, 32, 240, 0.4);
+          }
+      }
+      
+      @keyframes pulse {
+          0% {
+              text-shadow: 0 0 15px rgba(134, 26, 142, 0.9);
+          }
+          100% {
+              text-shadow: 0 0 25px rgba(160, 32, 240, 1);
+          }
+      }
+      
+      /* Footer styles */
+      .footer-highlight {
+          background-color: rgba(134, 26, 142, 0.3);
+          border-top: 1px solid rgba(134, 26, 142, 0.5);
+          box-shadow: 0 0 15px rgba(134, 26, 142, 0.6);
+          backdrop-filter: blur(3px);
+          -webkit-backdrop-filter: blur(3px);
+          animation: glow 3s infinite alternate;
+      }
+  </style>
+<!-- Source Protection Scripts --><script src="/JS/html-encryptor.js"></script></head>
+
+
+<h1>
+ <!---
+  <div class="topnav" .right {
+  position: absolute;
+  right: 0px;
+  width: 300px;
+  border: 3px solid #73AD21;
+  padding: 10px;
+}>
+    <nav role="navigation" align="right">
+  <ul>
+    <li><a href="#">One</a></li>
+    <li><a href="#" aria-haspopup="true">Two</a>
+      <ul class="dropdown" aria-label="submenu">
+        <li><a href="#">Sub-1</a></li>
+        <li><a href="#">Sub-2</a></li>
+        <li><a href="#">Sub-3</a></li>
+      </ul>
+    </li>
+    <li><a href="#">Three</a></li>
+  </ul>
+</nav>
+    </div>
+--->
+</h1>
+
+
+  <body>
+      <!-- Visitor Counter -->
+      <div id="visitor-counter">
+          <i class="fas fa-eye"></i> Visitors: <span id="count">0</span>
+      </div>
+      
+      <!-- Home Button -->
+      <a href="index.html" class="home-button" title="Back to Home">
+          <i class="fas fa-home"></i>
+      </a>
+      
+      <!-- 3-tier dropdown menu fixed to top left with toggle button -->
+      <button class="menu-toggle" aria-label="Toggle Menu">
+          <i class="fas fa-bars"></i> Menu
+      </button>
+      <div class="dropdown-menu">
+          <nav role="navigation">
+              <ul class="main-menu">
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#" aria-haspopup="true">Features</a>
+                      <ul class="dropdown" aria-label="submenu">
+                          <li><a href="art.html">Photo Spinner</a></li>
+                          <li><a href="pages/poetry.html">Poetry</a></li>
+                          <li><a href="pages/procreate-gallery.html">Procreate Gallery</a></li>
+                          <li><a href="pages/Rainbow.html">Rainbow Matrix</a></li>
+                          <li><a href="pages/truth-of-pride.html">Truth of Pride</a></li>
+                          <li><a href="secret-login.html">Private Board</a></li>
+                          <li><a href="#" aria-haspopup="true">Development</a>
+                              <ul class="dropdown third-level" aria-label="submenu">
+                                  <li><a href="#">Frontend</a></li>
+                                  <li><a href="#">Backend</a></li>
+                                  <li><a href="#">Full Stack</a></li>
+                              </ul>
+                          </li>
+                      </ul>
+                  </li>
+                  <li><a href="#" aria-haspopup="true">Adult Content</a>
+                      <ul class="dropdown" aria-label="submenu">
+                          <li><a href="pages/spookrotica.html">🔞 Spookrotica</a></li>
+                          <li><a href="pages/halloween-on-romance-night.html">Halloween Romance</a></li>
+                      </ul>
+                  </li>
+                  <li><a href="../pages/about.html">About</a></li>
+                  <li><a href="mailto:admin@shadowrealm.info">Contact</a></li>
+              </ul>
+          </nav>
+      </div>
+
+      <div class="blood-container">
+          <div class="blood-pool"></div>
+          <!-- Blood drips will be added dynamically with JavaScript -->
+      </div>
+    
+      <div class="content">
+          <!-- <h1>Dripping Blood Background</h1>
+         <p>Your content goes here</p>-->
+          <div style="position: absolute; left: 66.6%; top: 66.6%; font-size: 18px; color: #666; text-shadow: 0 0 3px #333; opacity: 0.8; cursor: default; user-select: none; transform: rotate(15deg);" onclick="window.location.href='pages/GothJesus.html'" title="">†</div>
+      </div>
+    
+      <script>
+          // Menu toggle functionality
+          const menuToggle = document.querySelector('.menu-toggle');
+          const nav = document.querySelector('nav');
+          
+          menuToggle.addEventListener('click', () => {
+              nav.classList.toggle('active');
+          });
+          
+          // Close menu when clicking outside
+          document.addEventListener('click', (e) => {
+              // If click is outside the menu and the toggle button
+              if (!nav.contains(e.target) && !menuToggle.contains(e.target)) {
+                  nav.classList.remove('active');
+              }
+          });
+          
+          // Visitor Counter functionality
+          document.addEventListener('DOMContentLoaded', () => {
+              updateVisitorCount();
+              createTitleMatrixEffect();
+          });
+          
+          // Create matrix rain effect for the title
+          function createTitleMatrixEffect() {
+              const matrixContainer = document.getElementById('title-matrix');
+              const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&*()_+-=[]{}|;:,.<>?';
+              const containerWidth = matrixContainer.offsetWidth;
+              const columnCount = Math.floor(containerWidth / 15);
+              
+              for (let i = 0; i < columnCount; i++) {
+                  const column = document.createElement('div');
+                  column.className = 'matrix-column';
+                  column.style.left = `${i * 15}px`;
+                  
+                  const columnHeight = Math.floor(Math.random() * 10) + 5;
+                  for (let j = 0; j < columnHeight; j++) {
+                      const char = document.createElement('div');
+                      char.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                      column.appendChild(char);
+                  }
+                  
+                  column.style.animationDuration = `${Math.random() * 5 + 3}s`;
+                  matrixContainer.appendChild(column);
+              }
+              
+              // Periodically change characters
+              setInterval(() => {
+                  const matrixChars = document.querySelectorAll('#title-matrix .matrix-column div');
+                  matrixChars.forEach(char => {
+                      if (Math.random() > 0.95) {
+                          char.textContent = characters.charAt(Math.floor(Math.random() * characters.length));
+                      }
+                  });
+              }, 100);
+          }
+          
+          function updateVisitorCount() {
+              // Get the counter element
+              const countElement = document.getElementById('count');
+              
+              // Get current count from localStorage
+              let visitorCount = localStorage.getItem('visitorCount');
+              
+              // If no count exists, initialize it
+              if (!visitorCount) {
+                  visitorCount = 0;
+              }
+              
+              // Check if this is a new visit (using session storage)
+              if (!sessionStorage.getItem('visited')) {
+                  // Increment the count for new visits
+                  visitorCount = parseInt(visitorCount) + 1;
+                  localStorage.setItem('visitorCount', visitorCount);
+                  
+                  // Mark this session as visited
+                  sessionStorage.setItem('visited', 'true');
+                  
+                  // Add a subtle animation effect
+                  countElement.style.transition = 'color 0.5s ease';
+                  countElement.style.color = '#ff00ff';
+                  setTimeout(() => {
+                      countElement.style.color = '#fff';
+                  }, 1000);
+              }
+              
+              // Display the count
+              countElement.textContent = visitorCount;
+          }
+          
+          // Create blood drips
+          const bloodContainer = document.querySelector('.blood-container');
+          const poolElement = document.querySelector('.blood-pool');
+          
+          // Create initial drips
+          for (let i = 0; i < 15; i++) {
+              createBloodDrip();
+          }
+          
+          // Create blood drops falling from the pool
+          setInterval(() => {
+              if (Math.random() > 0.7) {
+                  createBloodDrop();
+              }
+          }, 500);
+    
+          // Create new drips periodically
+          setInterval(() => {
+              createBloodDrip();
+          }, 2000);
+    
+          function createBloodDrip() {
+              const drip = document.createElement('div');
+              drip.classList.add('blood-drip');
+              
+              // Random position, width and delay
+              const left = Math.random() * 100;
+              const width = 10 + Math.random() * 40;
+              const delay = Math.random() * 5;
+              const duration = 5 + Math.random() * 7;
+              
+              drip.style.left = `${left}%`;
+              drip.style.width = `${width}px`;
+              drip.style.animationDelay = `${delay}s`;
+              drip.style.animationDuration = `${duration}s`;
+              
+              bloodContainer.appendChild(drip);
+              
+              // Remove the drip after animation completes to avoid cluttering the DOM
+              setTimeout(() => {
+                  drip.remove();
+              }, (delay + duration) * 1000);
+          }
+    
+          function createBloodDrop() {
+              const drop = document.createElement('div');
+              drop.classList.add('blood-drop');
+              
+              // Random position and delay
+              const left = Math.random() * 100;
+              const delay = Math.random() * 2;
+              const duration = 2 + Math.random() * 3;
+              
+              drop.style.left = `${left}%`;
+              drop.style.animationDelay = `${delay}s`;
+              drop.style.animationDuration = `${duration}s`;
+              
+              bloodContainer.appendChild(drop);
+              
+              // Remove the drop after animation completes
+              setTimeout(() => {
+                  drop.remove();
+              }, (delay + duration) * 1000);
+          }
+      </script>
+</br>
+</br>
+
+    <div class="content-wrapper" style="margin-bottom: 60px;">
+      <div class="title-container">
+        <div class="title-highlight">
+          <div class="matrix-rain" id="title-matrix"></div>
+          <h1 class="title-text">Welcome to Shadow Realm</h1>
+        </div>
+      </div>
+      <p>
+        placehold <span class="divider"> | </span> placeholder
+        <span class="divider"> | </span> Matrix
+      </p>
+      <a href="/">
+        <i class="icon fab fa-twitter fa-2x"></i>
+      </a>
+      <a href="https://">
+        <i class="icon fab fa-github fa-2x"></i>
+      </a>
+      <a href="https://www.twitch.tv/ashadowrealm">
+        <i class="fa-brands fa-twitch fa-2x"></i>
+      </a>
+      <a href="https://bsky.app/profile/shadowrealm.info/">
+       <i class="fa-brands fa-bluesky fa-2x"></i>
+      </a>
+      <a href="mailto:admin@shadowrealm.info">
+        <i class="fa-solid fa-envelope fa-2x"></i>
+      </a>
+    </div>
+  
+  </br>
+</br>
+
+  <!-- Source protection scripts -->
+  <script src="/JS/protection.js"></script>
+  <script src="/JS/content-loader.js"></script>
+<!-- Source Protection Scripts --><script src="/JS/enhanced-protection.js"></script><script src="/JS/apply-protection.js"></script></body>
+<footer style="color:#fff; padding: 20px; position: fixed; bottom: 0; left: 0; width: 100%; z-index: 2; display: flex; justify-content: center; align-items: center;" class="footer-highlight">
+  <p style="margin: 0;">&copy; 2025 Elora Borealis. All Rights Reserved.</p>
+  <img src="/images/logo.png" alt="Shadow Realm Logo" style="max-height: 40px; margin-left: 15px;">
+</footer>
+  
+
+  </html>
+
+

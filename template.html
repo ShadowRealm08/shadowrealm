@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tales from the Shadows</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Creepster&family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Cinzel:wght@400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0f1a 25%, #2a1b2a 50%, #1a0f1a 75%, #0a0a0a 100%);
+            color: #e6d7c3;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, rgba(255, 255, 255, 0.1), transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.05), transparent),
+                radial-gradient(1px 1px at 90px 40px, rgba(255, 255, 255, 0.1), transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.05), transparent);
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 4s infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 0.7; }
+        }
+
+        /* Floating mist effect */
+        .mist {
+            position: fixed;
+            top: 0;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(75, 0, 130, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .mist:nth-child(2) {
+            left: 50%;
+            animation-delay: -10s;
+            animation-duration: 25s;
+        }
+
+        .mist:nth-child(3) {
+            left: 80%;
+            top: 50%;
+            animation-delay: -15s;
+            animation-duration: 30s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(20px) rotate(240deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .site-title {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #8b4513;
+            text-shadow: 
+                0 0 10px rgba(139, 69, 19, 0.8),
+                0 0 20px rgba(139, 69, 19, 0.6),
+                0 0 30px rgba(139, 69, 19, 0.4);
+            margin-bottom: 20px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 10px rgba(139, 69, 19, 0.8), 0 0 20px rgba(139, 69, 19, 0.6), 0 0 30px rgba(139, 69, 19, 0.4); }
+            to { text-shadow: 0 0 20px rgba(139, 69, 19, 1), 0 0 30px rgba(139, 69, 19, 0.8), 0 0 40px rgba(139, 69, 19, 0.6); }
+        }
+
+        .site-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 1.2rem;
+            color: #d2691e;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        nav {
+            margin: 40px 0;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        nav a {
+            color: #cd853f;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            border: 2px solid transparent;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            color: #8b4513;
+            border-color: rgba(139, 69, 19, 0.5);
+            text-shadow: 0 0 10px rgba(139, 69, 19, 0.8);
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .story-card {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.9), rgba(40, 30, 40, 0.9));
+            border: 1px solid rgba(139, 69, 19, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                rgba(139, 69, 19, 0.3), 
+                rgba(160, 82, 45, 0.3), 
+                rgba(139, 69, 19, 0.3));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .story-card:hover::before {
+            opacity: 1;
+        }
+
+        .story-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.5),
+                0 0 20px rgba(139, 69, 19, 0.3);
+        }
+
+        .story-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: #cd853f;
+            margin-bottom: 15px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .story-excerpt {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #e6d7c3;
+        }
+
+        .story-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #d2691e;
+        }
+
+        .read-more {
+            display: inline-block;
+            background: linear-gradient(45deg, #8b4513, #a0522d);
+            color: #f5f5dc;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .read-more::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .read-more:hover::before {
+            left: 100%;
+        }
+
+        .read-more:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.4);
+        }
+
+        .featured-story {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(25, 15, 25, 0.95), rgba(45, 25, 45, 0.95));
+            border: 2px solid rgba(139, 69, 19, 0.5);
+            position: relative;
+        }
+
+        .featured-story::after {
+            content: 'FEATURED';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #8b4513;
+            color: #f5f5dc;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            border-top: 2px solid rgba(139, 69, 19, 0.3);
+            color: #d2691e;
+            font-family: 'Cinzel', serif;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .site-title {
+                font-size: 2.5rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .story-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #8b4513, #a0522d);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(45deg, #a0522d, #8b4513);
+        }
+    </style>
+</head>
+<body>
+    <div class="mist"></div>
+    <div class="mist"></div>
+    <div class="mist"></div>
+    
+    <div class="container">
+        <header>
+            <h1 class="site-title">Tales from the Shadows</h1>
+            <p class="site-subtitle">Where darkness whispers its secrets</p>
+            
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#stories">Stories</a></li>
+                    <li><a href="#archive">Archive</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main>
+            <div class="story-grid">
+                <!-- Featured Story -->
+                <article class="story-card featured-story">
+                    <h2 class="story-title">The Raven's Last Call</h2>
+                    <div class="story-meta">
+                        <span>October 31, 2024</span>
+                        <span>Horror • 2,400 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        In the depths of Blackwood Manor, where shadows dance with malevolent intent and the very walls seem to breathe with ancient secrets, Margaret discovers that some doors should never be opened. The grandfather clock strikes midnight, and with each chime, the boundary between the living and the dead grows thinner...
+                    </p>
+                    <a href="#" class="read-more">Enter the Darkness</a>
+                </article>
+
+                <!-- Regular Stories -->
+                <article class="story-card">
+                    <h2 class="story-title">Whispers in the Fog</h2>
+                    <div class="story-meta">
+                        <span>October 28, 2024</span>
+                        <span>Gothic • 1,800 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        The coastal town of Grimhaven holds secrets older than memory itself. When the fog rolls in from the treacherous waters, it carries with it voices of those who never made it to shore...
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="story-card">
+                    <h2 class="story-title">The Phantom's Waltz</h2>
+                    <div class="story-meta">
+                        <span>October 25, 2024</span>
+                        <span>Romance • 3,200 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        In the abandoned ballroom of Castle Ravencroft, Elizaveta hears music that shouldn't exist. Each night, she's drawn to dance with a partner who exists only in moonbeams and memories...
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="story-card">
+                    <h2 class="story-title">Blood Moon Rising</h2>
+                    <div class="story-meta">
+                        <span>October 22, 2024</span>
+                        <span>Supernatural • 2,700 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        Once every century, when the blood moon rises over the ancient cemetery, the veil between worlds tears open. Tonight is that night, and Detective Morrison is about to discover that some cases never close...
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="story-card">
+                    <h2 class="story-title">The Mirror's Edge</h2>
+                    <div class="story-meta">
+                        <span>October 19, 2024</span>
+                        <span>Psychological • 2,100 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        Antique dealer Helena thought she'd found the perfect piece for her collection. But the ornate Victorian mirror reflects more than just her image—it shows her a world where her darkest impulses reign supreme...
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+
+                <article class="story-card">
+                    <h2 class="story-title">Shadows of Salem</h2>
+                    <div class="story-meta">
+                        <span>October 16, 2024</span>
+                        <span>Historical • 4,100 words</span>
+                    </div>
+                    <p class="story-excerpt">
+                        In 1692, not all the witches were caught. Prudence Blackthorne knows this because she is one of them, and now, three centuries later, she's returned to Salem to settle an old score...
+                    </p>
+                    <a href="#" class="read-more">Read More</a>
+                </article>
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Tales from the Shadows. All rights reserved to the keeper of dark stories.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add some interactive gothic effects
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create flickering effect for the title
+            const title = document.querySelector('.site-title');
+            setInterval(() => {
+                title.style.opacity = Math.random() > 0.1 ? '1' : '0.7';
+            }, 150);
+
+            // Add mouse move effect for background
+            document.addEventListener('mousemove', function(e) {
+                const mists = document.querySelectorAll('.mist');
+                mists.forEach((mist, index) => {
+                    const speed = 0.01 + (index * 0.005);
+                    const x = e.clientX * speed;
+                    const y = e.clientY * speed;
+                    mist.style.transform = `translate(${x}px, ${y}px)`;
+                });
+            });
+
+            // Add hover sound effect simulation (visual feedback)
+            const storyCards = document.querySelectorAll('.story-card');
+            storyCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.filter = 'brightness(1.1) contrast(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.filter = 'brightness(1) contrast(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

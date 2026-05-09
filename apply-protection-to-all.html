@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Protection to All Pages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .instructions {
+            background-color: #f9f9f9;
+            border-left: 4px solid #007bff;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+        }
+        .button {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .code-block {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+    </style>
+<!-- Source Protection Scripts --><script src="/JS/html-encryptor.js"></script></head>
+<body>
+    <h1>Apply Source Code Protection to All Pages</h1>
+    
+    <div class="instructions">
+        <p>This tool will help you apply source code protection to all HTML pages in your website. Follow the instructions below to implement the protection.</p>
+    </div>
+    
+    <h2>Step 1: Add Protection Scripts to Each HTML File</h2>
+    <p>For each HTML file in your website, add the following code in the <code>&lt;head&gt;</code> section:</p>
+    <div class="code-block">
+<pre>&lt;!-- Source Protection Scripts --&gt;
+&lt;script src="/JS/html-encryptor.js"&gt;&lt;/script&gt;</pre>
+    </div>
+    
+    <p>And add the following code just before the closing <code>&lt;/body&gt;</code> tag:</p>
+    <div class="code-block">
+<pre>&lt;!-- Source Protection Scripts --&gt;
+&lt;script src="/JS/enhanced-protection.js"&gt;&lt;/script&gt;
+&lt;script src="/JS/apply-protection.js"&gt;&lt;/script&gt;</pre>
+    </div>
+    
+    <h2>Step 2: Protect Sensitive Content</h2>
+    <p>To protect specific sections of your HTML, add the <code>data-protect</code> attribute to the element:</p>
+    <div class="code-block">
+<pre>&lt;div data-protect&gt;
+    This content will be encrypted when the page loads.
+&lt;/div&gt;</pre>
+    </div>
+    
+    <p>You can also specify a custom encryption key:</p>
+    <div class="code-block">
+<pre>&lt;div data-protect data-protect-key="YourCustomKey"&gt;
+    This content will be encrypted with a custom key.
+&lt;/div&gt;</pre>
+    </div>
+    
+    <h2>Step 3: Pre-encrypt Content (Optional)</h2>
+    <p>For maximum protection, you can pre-encrypt sensitive content:</p>
+    <div class="code-block">
+<pre>&lt;!-- 1. Create your content --&gt;
+&lt;div id="sensitive-content" style="display: none;"&gt;
+    &lt;p&gt;This is sensitive content that should be protected.&lt;/p&gt;
+&lt;/div&gt;
+
+&lt;!-- 2. Add a script to encrypt it --&gt;
+&lt;script&gt;
+    document.addEventListener('DOMContentLoaded', function() {
+        const content = document.getElementById('sensitive-content').innerHTML;
+        const encryptedContent = window.encryptHTML(content);
+        
+        // Create an element to hold the encrypted content
+        const encryptedElement = document.createElement('div');
+        encryptedElement.setAttribute('data-encrypted', encryptedContent);
+        encryptedElement.setAttribute('data-key', 'ShadowRealm');
+        
+        // Replace the original element
+        document.getElementById('sensitive-content').replaceWith(encryptedElement);
+    });
+&lt;/script&gt;</pre>
+    </div>
+    
+    <h2>Manual Implementation</h2>
+    <p>If you prefer to manually implement the protection on each page, you can copy and paste the required code snippets into each HTML file.</p>
+    
+    <h2>Testing the Protection</h2>
+    <p>After implementing the protection, test your website to ensure:</p>
+    <ul>
+        <li>The website functions normally for regular users</li>
+        <li>Right-clicking is disabled</li>
+        <li>Keyboard shortcuts for viewing source are disabled</li>
+        <li>DevTools detection works properly</li>
+        <li>Encrypted content is properly decrypted when the page loads</li>
+    </ul>
+    
+    <p><a href="index.html" class="button">Return to Home</a></p>
+    
+    <script src="JS/html-encryptor.js"></script>
+    <script src="JS/enhanced-protection.js"></script>
+    <script src="JS/apply-protection.js"></script>
+<!-- Source Protection Scripts --><script src="/JS/enhanced-protection.js"></script><script src="/JS/apply-protection.js"></script></body>
+</html>
+
